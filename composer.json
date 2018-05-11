@@ -23,7 +23,8 @@
 	"extra": {
 		"installer-name": "simple-styleguide",
         "expose": [
-            "dist"
+            "dist",
+            "images"
         ]
     },
     "autoload": {

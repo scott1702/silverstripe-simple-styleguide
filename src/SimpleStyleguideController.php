@@ -4,6 +4,7 @@ namespace BenManu\SimpleStyleguide;
 
 use SilverStripe\Control\Controller;
 use SilverStripe\Control\Director;
+use SilverStripe\Core\Manifest\ModuleResourceLoader;
 use SilverStripe\Security\Permission;
 use SilverStripe\CMS\Model\SiteTree;
 use SilverStripe\CMS\Controllers\ModelAsController;
@@ -39,7 +40,7 @@ class SimpleStyleguideController extends Controller
      * @config
      * @var string
      */
-    private static $placeholder_image_url = '/simple-styleguide/images/placeholder.png';
+    private static $placeholder_image_url = 'benmanu/silverstripe-simple-styleguide:images/placeholder.png';
 
     /**
      * @var array
@@ -69,8 +70,8 @@ class SimpleStyleguideController extends Controller
         $controller->init();
 
         // requirements
-        Requirements::css('simple-styleguide/dist/app.css');
-        Requirements::javascript('simple-styleguide/dist/app.js');
+        Requirements::css('benmanu/silverstripe-simple-styleguide:dist/app.css');
+        Requirements::javascript('benmanu/silverstripe-simple-styleguide:dist/app.js');
 
         return $controller
             ->customise($this->getStyleGuideData())
@@ -83,7 +84,9 @@ class SimpleStyleguideController extends Controller
      */
     public function getStyleguideData()
     {
-        $data = new ArrayData([
+        $placeholderImage = ModuleResourceLoader::resourcePath($this->getPlaceholderImageURL());
+
+        $data = ArrayData::create([
             'Title' => 'Styleguide',
             'Message' => DBField::create_field(
                 'HTMLText',
@@ -92,7 +95,7 @@ class SimpleStyleguideController extends Controller
             'TestForm' => $this->getTestForm(),
             'Content' => $this->getContent(),
             'ColorSwatches' => $this->getColorSwatches(),
-            'PlaceholderImageURL' => $this->getPlaceholderImageURL(),
+            'PlaceholderImageURL' => $placeholderImage,
         ]);
 
         // extensions for adding/overriding template data.
