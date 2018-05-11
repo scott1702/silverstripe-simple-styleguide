@@ -4,6 +4,7 @@ namespace BenManu\SimpleStyleguide;
 
 use SilverStripe\Control\Controller;
 use SilverStripe\Control\Director;
+use SilverStripe\Core\Manifest\ModuleResource;
 use SilverStripe\Core\Manifest\ModuleResourceLoader;
 use SilverStripe\Security\Permission;
 use SilverStripe\CMS\Model\SiteTree;
@@ -84,7 +85,11 @@ class SimpleStyleguideController extends Controller
      */
     public function getStyleguideData()
     {
-        $placeholderImage = ModuleResourceLoader::resourcePath($this->getPlaceholderImageURL());
+        // Resolve resource path location for placeholder image
+        $placeholderImage = ModuleResourceLoader::singleton()->resolveResource($this->getPlaceholderImageURL());
+        if ($placeholderImage instanceof ModuleResource) {
+            $placeholderImage = $placeholderImage->getURL();
+        }
 
         $data = ArrayData::create([
             'Title' => 'Styleguide',
